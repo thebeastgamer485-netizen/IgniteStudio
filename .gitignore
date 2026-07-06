@@ -2,3 +2,5 @@ ignitestudio-audit/
 PRODUCT.md
 .claude/
 *.log
+
+.vercel

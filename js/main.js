@@ -197,6 +197,15 @@
     });
   });
 
+  /* ---------- Form delivery (Web3Forms — submissions arrive by email) ---------- */
+  const W3F_KEY = "e27e3107-f707-4b5b-8ceb-5c3d0ec9338c"; // public client-side key
+  const sendLead = (subject, data) =>
+    fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ access_key: W3F_KEY, subject, from_name: "Ignite Studio Website", ...data })
+    }).then((r) => r.json());
+
   /* ---------- Hero quote form (asks which services) ---------- */
   const quoteForm = $("#quoteForm");
   const quoteNote = $("#quoteNote");
@@ -235,9 +244,29 @@
       const first = nameEl.value.trim().split(" ")[0];
       const site = ($("#q-website").value || "").trim().replace(/^https?:\/\//, "");
       const auditBit = site ? ` We'll also audit ${site}.` : "";
-      successHeading.textContent = `Thanks, ${first}!`;
-      successMsg.textContent = `We'll prepare your custom quote for ${listServices(chosen)} and reply within one business day.${auditBit}`;
-      successOverlay.classList.add("visible");
+
+      submitLabel.textContent = "Sending…";
+      submitBtn.disabled = true;
+      sendLead("New quote request — " + listServices(chosen), {
+        name: nameEl.value.trim(),
+        email: emailEl.value.trim(),
+        website: site || "(not provided)",
+        services: chosen.join(", ")
+      })
+        .then((res) => {
+          if (!res.success) throw new Error(res.message || "send failed");
+          successHeading.textContent = `Thanks, ${first}!`;
+          successMsg.textContent = `We'll prepare your custom quote for ${listServices(chosen)} and reply within one business day.${auditBit}`;
+          successOverlay.classList.add("visible");
+        })
+        .catch(() => {
+          quoteNote.textContent = "Something went wrong sending your request. Please email hello@ignitestudio.com instead.";
+          quoteNote.classList.remove("success");
+        })
+        .finally(() => {
+          submitLabel.textContent = originalLabel;
+          submitBtn.disabled = false;
+        });
     });
 
     againBtn.addEventListener("click", () => {
@@ -263,10 +292,25 @@
         return;
       }
       const name = ($("#name").value || "there").trim().split(" ")[0];
-      note.textContent = `Thanks, ${name}! Your free audit request is in. We'll reply within one business day. 🔥`;
-      note.classList.add("success");
-      form.querySelector('button[type="submit"] span').textContent = "Request Received ✓";
-      form.querySelectorAll("input").forEach((i) => (i.disabled = true));
+      const auditBtn = form.querySelector('button[type="submit"] span');
+      auditBtn.textContent = "Sending…";
+      sendLead("New free-audit request", {
+        name: $("#name").value.trim(),
+        email: email.value.trim(),
+        website: ($("#website") ? $("#website").value : "").trim() || "(not provided)"
+      })
+        .then((res) => {
+          if (!res.success) throw new Error(res.message || "send failed");
+          note.textContent = `Thanks, ${name}! Your free audit request is in. We'll reply within one business day. 🔥`;
+          note.classList.add("success");
+          auditBtn.textContent = "Request Received ✓";
+          form.querySelectorAll("input").forEach((i) => (i.disabled = true));
+        })
+        .catch(() => {
+          note.textContent = "Something went wrong sending your request. Please email hello@ignitestudio.com instead.";
+          note.classList.remove("success");
+          auditBtn.textContent = "Get My Free Audit";
+        });
     });
   }
 
