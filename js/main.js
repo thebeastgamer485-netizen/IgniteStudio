@@ -197,18 +197,17 @@
     });
   });
 
-  /* ---------- Form delivery (Web3Forms — submissions arrive by email) ---------- */
-  const W3F_KEY = "e27e3107-f707-4b5b-8ceb-5c3d0ec9338c"; // public client-side key
-  const sendLead = (subject, data) =>
-    fetch("https://api.web3forms.com/submit", {
+  /* ---------- Form delivery (/api/lead → branded email, Web3Forms fallback) ---------- */
+  const sendLead = (type, data) =>
+    fetch("/api/lead", {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({ access_key: W3F_KEY, subject, from_name: "Ignite Studio Website", ...data })
+      body: JSON.stringify({ type, ...data })
     }).then((r) => r.json());
 
   /* ---------- Hero quote form (asks which services) ---------- */
   const quoteForm = $("#quoteForm");
-  const quoteNote = $("#quoteNote");
+  const quoteNote = $("#quoteNoteText") || $("#quoteNote");
   if (quoteForm) {
     const successOverlay = $("#quoteSuccess");
     const successHeading = $("#successHeading");
@@ -247,7 +246,7 @@
 
       submitLabel.textContent = "Sending…";
       submitBtn.disabled = true;
-      sendLead("New quote request — " + listServices(chosen), {
+      sendLead("quote", {
         name: nameEl.value.trim(),
         email: emailEl.value.trim(),
         website: site || "(not provided)",
@@ -294,7 +293,7 @@
       const name = ($("#name").value || "there").trim().split(" ")[0];
       const auditBtn = form.querySelector('button[type="submit"] span');
       auditBtn.textContent = "Sending…";
-      sendLead("New free-audit request", {
+      sendLead("audit", {
         name: $("#name").value.trim(),
         email: email.value.trim(),
         website: ($("#website") ? $("#website").value : "").trim() || "(not provided)"

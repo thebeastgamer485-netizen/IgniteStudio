@@ -461,36 +461,55 @@ h1, h2, h3, h4 {
 /* -------- Hero quote form (light card, high contrast on the dark hero) -------- */
 .quote-form {
   position: relative;
-  background: #FBFAF9;
+  background: #FFFFFF;
   color: #1B1512;
   border: 1px solid rgba(0,0,0,.06);
   border-radius: var(--radius-lg);
-  padding: clamp(22px, 2.6vw, 32px);
+  padding: clamp(26px, 3vw, 38px);
   box-shadow: 0 34px 90px -28px rgba(0,0,0,.75), 0 0 0 1px rgba(250,89,3,.10);
   display: grid;
-  gap: 15px;
+  gap: 16px;
+  overflow: hidden;
 }
-.quote-title { font-size: 1.6rem; line-height: 1.05; }
-.quote-sub { color: #574E49; font-size: .96rem; margin-top: -6px; }
-.quote-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.quote-form .field label { color: #574E49; }
-.field-hint { color: #756A62; font-weight: 400; }   /* 4.6:1 on the card (was 3.0) */
+/* flame signature: gradient strip along the top edge */
+.quote-form::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+  background: var(--grad-fire);
+}
+.quote-title { font-size: 1.65rem; line-height: 1.05; letter-spacing: -.02em; }
+.quote-sub { color: #574E49; font-size: .95rem; margin-top: -8px; }
+.quote-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.quote-form .field { gap: 6px; }
+.quote-form .field label { color: #3A322E; font-size: .86rem; font-weight: 600; }
+.field-hint { color: #756A62; font-weight: 400; }   /* 4.6:1 on the card */
 .quote-form input {
   font-family: var(--font-body);
   font-size: 1rem;
-  padding: 12px 14px;
-  border-radius: var(--radius-sm);
-  border: 1px solid rgba(20,12,8,.18);
-  background: #fff;
+  padding: 13px 16px;
+  border-radius: 12px;
+  border: 1.5px solid rgba(20,12,8,.13);
+  background: #FAF8F7;
   color: #1B1512;
-  transition: border-color .2s, box-shadow .2s;
+  transition: border-color .2s, box-shadow .2s, background .2s;
 }
-.quote-form input::placeholder { color: #756A62; }  /* 4.8:1 on white (was 3.15) */
+.quote-form input:hover { border-color: rgba(20,12,8,.28); }
+.quote-form input::placeholder { color: #756A62; }  /* 4.8:1 */
 .quote-form input:focus {
   outline: none;
+  background: #fff;
   border-color: var(--flame);
-  box-shadow: 0 0 0 3px rgba(250,89,3,.18);
+  box-shadow: 0 0 0 4px rgba(250,89,3,.14);
 }
+.quote-form .form-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+.quote-form .form-note svg { flex-shrink: 0; opacity: .75; }
 .quote-form .form-note { color: #6B6058; margin-top: 2px; }  /* 5.5:1 (was 3.96) */
 .quote-form .form-note.success { color: #C23A08; font-weight: 600; }
 
@@ -572,9 +591,27 @@ h1, h2, h3, h4 {
   color: #fff;
 }
 
-.chips-field { border: 0; padding: 0; margin: 0; }
-.chips-field legend { font-size: .88rem; font-weight: 600; color: #574E49; margin-bottom: 9px; padding: 0; }
-.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips-field {
+  border: 0;
+  padding: 14px 0 0;
+  margin: 0;
+  border-top: 1px solid rgba(20,12,8,.08);
+}
+.chips-field legend {
+  float: left;                 /* keeps the legend inside the fieldset's border-top */
+  width: 100%;
+  font-size: .86rem;
+  font-weight: 600;
+  color: #3A322E;
+  margin-bottom: 10px;
+  padding: 14px 0 0;
+}
+.chips {
+  clear: both;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
 .chip { position: relative; }
 .chip input {
   position: absolute;
@@ -583,23 +620,26 @@ h1, h2, h3, h4 {
   pointer-events: none;
 }
 .chip label {
-  display: inline-block;
-  padding: 8px 14px;
-  border: 1px solid rgba(20,12,8,.20);
-  border-radius: 999px;
-  font-size: .9rem;
+  display: block;
+  text-align: center;
+  padding: 10px 6px;
+  border: 1.5px solid rgba(20,12,8,.13);
+  border-radius: 10px;
+  background: #FAF8F7;
+  font-size: .88rem;
   font-weight: 500;
   color: #3A322E;
   cursor: pointer;
-  transition: background .2s, color .2s, border-color .2s, transform .15s;
+  transition: background .2s, color .2s, border-color .2s, transform .15s, box-shadow .2s;
   user-select: none;
 }
-.chip label:hover { border-color: var(--flame); color: #C23A08; transform: scale(1.05); }
+.chip label:hover { border-color: var(--flame); color: #C23A08; transform: scale(1.04); background: #fff; }
 .chip input:checked + label {
   background: var(--grad-fire);
   color: #1A0E05;
   border-color: transparent;
-  font-weight: 600;
+  font-weight: 700;
+  box-shadow: 0 4px 14px -4px rgba(251,54,7,.5);
 }
 .chip input:focus-visible + label { outline: 2px solid var(--flame); outline-offset: 2px; }
 .chip input:checked + label:active { transform: scale(.97); }
@@ -1403,6 +1443,7 @@ body.page-exit .site-footer { opacity: 0; }
 @media (max-width: 520px) {
   .case-stats { grid-template-columns: 1fr; }
   .founder-note { flex-direction: column; }
+  .chips { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* ---------------- Browser-chrome frame on portfolio shots ---------------- */
