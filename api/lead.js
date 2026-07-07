@@ -1,7 +1,46 @@
-// Lead intake: receives quote/audit form submissions and emails a branded
-// notification via Resend. Falls back to Web3Forms if Resend is unavailable.
+// Lead intake: stores every submission in Supabase (rate-limited at the
+// database), then emails a branded notification via Resend with Web3Forms
+// as delivery fallback. The Supabase key used here is insert-only under RLS.
+import { createHash } from "node:crypto";
+
 const LEAD_INBOX = "thebeastgamer485@gmail.com";
 const W3F_KEY = "e27e3107-f707-4b5b-8ceb-5c3d0ec9338c";
+
+async function storeLead(req, { type, name, email, website, services }) {
+  const url = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_KEY;
+  if (!url || !key) return { stored: false, rateLimited: false };
+
+  const ip = (req.headers["x-forwarded-for"] || "").split(",")[0].trim() || "unknown";
+  const ipHash = createHash("sha256")
+    .update(ip + (process.env.IP_HASH_SALT || ""))
+    .digest("hex");
+
+  const r = await fetch(`${url}/rest/v1/leads`, {
+    method: "POST",
+    headers: {
+      apikey: key,
+      Authorization: `Bearer ${key}`,
+      "Content-Type": "application/json",
+      Prefer: "return=minimal",
+    },
+    body: JSON.stringify({
+      type: type === "audit" ? "audit" : "quote",
+      name: String(name).slice(0, 120),
+      email: String(email).slice(0, 254),
+      website: website ? String(website).slice(0, 200) : null,
+      services: services ? String(services).slice(0, 300) : null,
+      ip_hash: ipHash,
+      user_agent: String(req.headers["user-agent"] || "").slice(0, 300),
+    }),
+  });
+
+  if (r.status === 201) return { stored: true, rateLimited: false };
+  const body = await r.text();
+  if (body.includes("RATE_LIMIT")) return { stored: false, rateLimited: true };
+  console.error("supabase insert failed:", r.status, body.slice(0, 300));
+  return { stored: false, rateLimited: false };
+}
 
 const esc = (s) =>
   String(s || "").replace(/[&<>"']/g, (c) =>
@@ -93,6 +132,17 @@ export default async function handler(req, res) {
     return res.status(400).json({ success: false, message: "Missing or invalid fields" });
   }
 
+  // store first: the database is the source of truth and enforces rate limits
+  // (5/IP/hour, 3/email/day) — a rate-limited request sends no email.
+  const db = await storeLead(req, { type, name, email, website, services });
+  if (db.rateLimited) {
+    return res.status(429).json({
+      success: false,
+      rateLimited: true,
+      message: "Too many requests. Please email hello@ignitestudio.com instead.",
+    });
+  }
+
   const isAudit = type === "audit";
   const subject = isAudit
     ? `\u{1F525} Free-audit request from ${name}`
@@ -135,6 +185,9 @@ export default async function handler(req, res) {
       if (!j.success) throw new Error("web3forms failed");
       return res.status(200).json({ success: true, via: "web3forms" });
     } catch {
+      // both email routes failed — but if the lead is safe in the database,
+      // the submission still succeeded from the visitor's point of view.
+      if (db.stored) return res.status(200).json({ success: true, via: "database" });
       return res.status(502).json({ success: false, message: "Delivery failed" });
     }
   }

@@ -197,7 +197,8 @@
     });
   });
 
-  /* ---------- Form delivery (/api/lead → branded email, Web3Forms fallback) ---------- */
+  /* ---------- Form delivery (/api/lead → Supabase + branded email) ---------- */
+  const RATE_LIMIT_MSG = "You've reached the request limit for now — email us at hello@ignitestudio.com and we'll take it from there.";
   const sendLead = (type, data) =>
     fetch("/api/lead", {
       method: "POST",
@@ -253,13 +254,16 @@
         services: chosen.join(", ")
       })
         .then((res) => {
+          if (res.rateLimited) throw new Error("rate");
           if (!res.success) throw new Error(res.message || "send failed");
           successHeading.textContent = `Thanks, ${first}!`;
           successMsg.textContent = `We'll prepare your custom quote for ${listServices(chosen)} and reply within one business day.${auditBit}`;
           successOverlay.classList.add("visible");
         })
-        .catch(() => {
-          quoteNote.textContent = "Something went wrong sending your request. Please email hello@ignitestudio.com instead.";
+        .catch((err) => {
+          quoteNote.textContent = err.message === "rate"
+            ? RATE_LIMIT_MSG
+            : "Something went wrong sending your request. Please email hello@ignitestudio.com instead.";
           quoteNote.classList.remove("success");
         })
         .finally(() => {
@@ -299,14 +303,17 @@
         website: ($("#website") ? $("#website").value : "").trim() || "(not provided)"
       })
         .then((res) => {
+          if (res.rateLimited) throw new Error("rate");
           if (!res.success) throw new Error(res.message || "send failed");
           note.textContent = `Thanks, ${name}! Your free audit request is in. We'll reply within one business day. 🔥`;
           note.classList.add("success");
           auditBtn.textContent = "Request Received ✓";
           form.querySelectorAll("input").forEach((i) => (i.disabled = true));
         })
-        .catch(() => {
-          note.textContent = "Something went wrong sending your request. Please email hello@ignitestudio.com instead.";
+        .catch((err) => {
+          note.textContent = err.message === "rate"
+            ? RATE_LIMIT_MSG
+            : "Something went wrong sending your request. Please email hello@ignitestudio.com instead.";
           note.classList.remove("success");
           auditBtn.textContent = "Get My Free Audit";
         });
