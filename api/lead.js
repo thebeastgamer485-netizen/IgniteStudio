@@ -35,11 +35,10 @@ function emailHtml({ type, name, email, website, services }) {
     <tr><td align="center">
       <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;">
 
-        <!-- header -->
-        <tr><td style="background:#0B0908;border-radius:16px 16px 0 0;padding:28px 32px;">
-          <div style="font-size:20px;font-weight:800;letter-spacing:.14em;color:#F3EBE6;">
-            <span style="color:#FA5903;">&#128293;</span>&nbsp;IGNITE <span style="color:#FA5903;">STUDIO</span>
-          </div>
+        <!-- header: real logo on white -->
+        <tr><td align="center" style="background:#FFFFFF;border-radius:16px 16px 0 0;padding:26px 32px 18px;">
+          <img src="https://ignitestudio-three.vercel.app/assets/email-logo.png" width="140" alt="Ignite Studio"
+               style="display:block;width:140px;height:auto;border:0;" />
         </td></tr>
 
         <!-- flame strip -->
