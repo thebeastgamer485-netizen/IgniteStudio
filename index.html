@@ -41,7 +41,7 @@
   <link rel="preload" href="assets/fonts/bricolage-grotesque-var.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="assets/fonts/hanken-grotesk-var.woff2" as="font" type="font/woff2" crossorigin />
 
-  <link rel="stylesheet" href="css/styles.css?v=20" />
+  <link rel="stylesheet" href="css/styles.css?v=22" />
 
   <!-- ============ STRUCTURED DATA: ORGANIZATION / LOCALBUSINESS ============ -->
   <script type="application/ld+json">
@@ -192,15 +192,15 @@
           <div class="hero-copy">
             <p class="eyebrow reveal" data-reveal>
               <span class="pulse-dot" aria-hidden="true"></span>
-              Digital marketing for ambitious small businesses
+              <span data-cms="hero.eyebrow">Digital marketing for ambitious small businesses</span>
             </p>
 
             <h1 class="hero-title" id="hero-title">
-              <span class="line reveal" data-reveal>We don't just do marketing.</span>
-              <span class="line reveal" data-reveal data-delay="80">We <span class="fire-text">ignite</span> growth.</span>
+              <span class="line reveal" data-reveal data-cms="hero.title_line1">We don't just do marketing.</span>
+              <span class="line reveal" data-reveal data-delay="80"><span data-cms="hero.title_line2_pre">We </span><span class="fire-text" data-cms="hero.title_line2_accent">ignite</span><span data-cms="hero.title_line2_post"> growth.</span></span>
             </h1>
 
-            <p class="hero-sub reveal" data-reveal data-delay="160">
+            <p class="hero-sub reveal" data-reveal data-delay="160" data-cms="hero.sub">
               Ignite Studio builds high-converting websites and runs SEO &amp; ad campaigns
               that turn local small businesses into the names everyone knows. Real strategy,
               real revenue, and none of the usual agency jargon.
@@ -208,9 +208,9 @@
 
             <div class="hero-cta reveal" data-reveal data-delay="240">
               <a class="btn btn-outline btn-lg" href="#work">
-                <span>View Our Portfolio</span>
+                <span data-cms="hero.cta_primary">View Our Portfolio</span>
               </a>
-              <a class="btn btn-ghost btn-lg" href="#pricing">See pricing →</a>
+              <a class="btn btn-ghost btn-lg" href="#pricing" data-cms="hero.cta_secondary">See pricing →</a>
             </div>
 
             <div class="trust-badge reveal" data-reveal data-delay="300">
@@ -222,7 +222,7 @@
               </div>
               <div class="tb-text">
                 <div class="tb-stars" aria-hidden="true">★★★★★</div>
-                <p>Rated <strong>4.9/5</strong> by 212 small businesses</p>
+                <p>Rated <strong data-cms="trust_badge.rating">4.9/5</strong> <span data-cms="trust_badge.text_post">by 212 small businesses</span></p>
               </div>
             </div>
           </div>
@@ -311,7 +311,7 @@
     <section class="section section--light" id="services" aria-labelledby="services-title">
       <div class="container">
         <header class="section-head reveal" data-reveal>
-          <h2 class="section-title" id="services-title">Everything your business needs to <span class="fire-text">get found and grow</span>.</h2>
+          <h2 class="section-title" id="services-title" data-cms-heading="section_services">Everything your business needs to <span class="fire-text">get found and grow</span>.</h2>
           <p class="section-lead">One team, one strategy, every channel that matters. We connect the dots between design, search, and advertising so nothing gets lost.</p>
         </header>
 
@@ -377,7 +377,7 @@
     <section class="section section-alt" id="work" aria-labelledby="work-title">
       <div class="container">
         <header class="section-head reveal" data-reveal>
-          <h2 class="section-title" id="work-title">Small budgets. <span class="fire-text">Big results.</span></h2>
+          <h2 class="section-title" id="work-title" data-cms-heading="section_work">Small budgets. <span class="fire-text">Big results.</span></h2>
           <p class="section-lead">A few of the local businesses we've helped catch fire.</p>
         </header>
 
@@ -495,7 +495,7 @@
     <section class="section" id="pricing" aria-labelledby="pricing-title">
       <div class="container">
         <header class="section-head reveal" data-reveal>
-          <h2 class="section-title" id="pricing-title">Honest pricing. <span class="fire-text">No surprises.</span></h2>
+          <h2 class="section-title" id="pricing-title" data-cms-heading="section_pricing">Honest pricing. <span class="fire-text">No surprises.</span></h2>
           <p class="section-lead">Most agencies make you book a call to hear a number. Here's ours up front — every plan starts with the same free audit.</p>
         </header>
 
@@ -549,7 +549,7 @@
     <section class="section section--light" aria-labelledby="reviews-title">
       <div class="container">
         <header class="section-head reveal" data-reveal>
-          <h2 class="section-title" id="reviews-title">Don't take our word for it.</h2>
+          <h2 class="section-title" id="reviews-title" data-cms="section_reviews.title">Don't take our word for it.</h2>
         </header>
 
         <div class="reviews">
@@ -586,7 +586,7 @@
     <section class="section" id="faq" aria-labelledby="faq-title">
       <div class="container container-narrow">
         <header class="section-head reveal" data-reveal>
-          <h2 class="section-title" id="faq-title">Frequently asked questions</h2>
+          <h2 class="section-title" id="faq-title" data-cms="section_faq.title">Frequently asked questions</h2>
         </header>
 
         <div class="faq">
@@ -623,8 +623,8 @@
       <div class="cta-glow" aria-hidden="true"></div>
       <div class="container">
         <div class="cta-card reveal" data-reveal>
-          <h2 class="cta-title" id="cta-title">Let's <span class="fire-text">ignite</span> your growth.</h2>
-          <p class="cta-lead">Get a free, no-obligation audit of your website, SEO, and ads. We'll show you exactly where the biggest wins are hiding.</p>
+          <h2 class="cta-title" id="cta-title" data-cms-heading="cta"><span data-cms="cta.title_pre">Let's </span><span class="fire-text" data-cms="cta.title_accent">ignite</span><span data-cms="cta.title_post"> your growth.</span></h2>
+          <p class="cta-lead" data-cms="cta.lead">Get a free, no-obligation audit of your website, SEO, and ads. We'll show you exactly where the biggest wins are hiding.</p>
 
           <form class="audit-form" id="auditForm" novalidate>
             <div class="field">
@@ -688,7 +688,7 @@
 
     <div class="container footer-bottom">
       <p>© <span id="year">2026</span> Ignite Studio. All rights reserved.</p>
-      <p class="footer-made">Made with fire in Austin, TX 🔥</p>
+      <p class="footer-made" data-cms="footer.made">Made with fire in Austin, TX 🔥</p>
     </div>
   </footer>
 
@@ -697,6 +697,8 @@
     <a class="btn btn-primary" href="#audit"><span>Get a Free Audit</span></a>
   </div>
 
-  <script src="js/main.js?v=21" defer></script>
+  <script src="js/cms-config.js?v=22" defer></script>
+  <script src="js/cms.js?v=22" defer></script>
+  <script src="js/main.js?v=22" defer></script>
 </body>
 </html>
