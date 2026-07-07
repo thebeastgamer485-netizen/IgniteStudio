@@ -9,7 +9,12 @@
   const { URL, ANON } = window.IGNITE_CMS;
   const $ = (s, c = document) => c.querySelector(s);
   const el = (tag, props = {}, kids = []) => {
-    const n = Object.assign(document.createElement(tag), props);
+    const n = document.createElement(tag);
+    for (const [k, v] of Object.entries(props)) {
+      if (k === "dataset") Object.assign(n.dataset, v);
+      else if (k === "style" && typeof v === "string") n.setAttribute("style", v);
+      else n[k] = v;
+    }
     (Array.isArray(kids) ? kids : [kids]).forEach((k) => k != null && n.append(k));
     return n;
   };
