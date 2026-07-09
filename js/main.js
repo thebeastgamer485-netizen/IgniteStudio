@@ -325,7 +325,21 @@
   if (canvas && !prefersReduced) {
     const ctx = canvas.getContext("2d");
     let w, h, embers, raf;
-    const COUNT = 46;
+    // fewer particles on small screens; no per-particle shadowBlur (very costly)
+    const COUNT = window.innerWidth < 700 ? 22 : 38;
+
+    // Pre-render one soft glowing ember to an offscreen sprite. Drawing this
+    // cached image per particle is far cheaper than ctx.shadowBlur every frame.
+    const SPRITE = 32;
+    const sprite = document.createElement("canvas");
+    sprite.width = sprite.height = SPRITE;
+    const sctx = sprite.getContext("2d");
+    const g = sctx.createRadialGradient(SPRITE / 2, SPRITE / 2, 0, SPRITE / 2, SPRITE / 2, SPRITE / 2);
+    g.addColorStop(0, "hsla(30,100%,60%,1)");
+    g.addColorStop(0.4, "hsla(24,100%,55%,0.55)");
+    g.addColorStop(1, "hsla(20,100%,50%,0)");
+    sctx.fillStyle = g;
+    sctx.fillRect(0, 0, SPRITE, SPRITE);
 
     const resize = () => {
       const rect = canvas.parentElement.getBoundingClientRect();
@@ -340,11 +354,10 @@
     const makeEmber = (fromBottom) => ({
       x: rand(0, w),
       y: fromBottom ? h + rand(0, 40) : rand(0, h),
-      r: rand(0.8, 2.6),
+      r: rand(3, 10),
       vy: rand(0.25, 0.9),
       vx: rand(-0.25, 0.25),
       life: rand(0.3, 1),
-      hue: rand(18, 40),
     });
 
     const init = () => {
@@ -354,20 +367,18 @@
 
     const draw = () => {
       ctx.clearRect(0, 0, w, h);
-      embers.forEach((p, i) => {
+      ctx.globalCompositeOperation = "lighter"; // additive glow, no shadowBlur
+      for (let i = 0; i < embers.length; i++) {
+        const p = embers[i];
         p.y -= p.vy;
         p.x += p.vx + Math.sin(p.y * 0.01) * 0.15;
         p.life -= 0.0015;
         if (p.y < -10 || p.life <= 0) embers[i] = makeEmber(true);
-        const alpha = Math.max(0, Math.min(1, p.life)) * 0.8;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(${p.hue}, 100%, 55%, ${alpha})`;
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = `hsla(${p.hue}, 100%, 55%, ${alpha})`;
-        ctx.fill();
-      });
-      ctx.shadowBlur = 0;
+        ctx.globalAlpha = Math.max(0, Math.min(1, p.life)) * 0.75;
+        ctx.drawImage(sprite, p.x - p.r, p.y - p.r, p.r * 2, p.r * 2);
+      }
+      ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = "source-over";
       raf = requestAnimationFrame(draw);
     };
 
