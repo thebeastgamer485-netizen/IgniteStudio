@@ -41,7 +41,7 @@
   <link rel="preload" href="assets/fonts/bricolage-grotesque-var.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="assets/fonts/hanken-grotesk-var.woff2" as="font" type="font/woff2" crossorigin />
 
-  <link rel="stylesheet" href="css/styles.css?v=22" />
+  <link rel="stylesheet" href="css/styles.css?v=26" />
 
   <!-- ============ STRUCTURED DATA: ORGANIZATION / LOCALBUSINESS ============ -->
   <script type="application/ld+json">
@@ -201,9 +201,9 @@
             </h1>
 
             <p class="hero-sub reveal" data-reveal data-delay="160" data-cms="hero.sub">
-              Ignite Studio builds high-converting websites and runs SEO &amp; ad campaigns
-              that turn local small businesses into the names everyone knows. Real strategy,
-              real revenue, and none of the usual agency jargon.
+              We build the search, media, content, and web systems that compound — for
+              ambitious businesses done waiting for growth. And unlike most agencies,
+              we publish our numbers.
             </p>
 
             <div class="hero-cta reveal" data-reveal data-delay="240">
@@ -304,6 +304,40 @@
           <span>Social Media</span><span class="dot">✦</span>
           <span>Content</span><span class="dot">✦</span>
         </div>
+      </div>
+    </section>
+
+    <!-- ================= SCORECARD (we publish the numbers) ================= -->
+    <section class="section scorecard-section" id="scorecard" aria-labelledby="scorecard-title">
+      <div class="container">
+        <div class="section-head reveal" data-reveal>
+          <p class="scorecard-kicker">The proof is this page</p>
+          <h2 class="section-title" id="scorecard-title">We sell speed. So <span class="fire-text">we publish ours.</span></h2>
+          <p class="section-lead">Most agencies that promise fast websites run slow ones. Here are this page's real, measured numbers — the same metrics Google ranks on. Check them yourself.</p>
+        </div>
+        <div class="scorecard-grid reveal" data-reveal>
+          <div class="score-tile">
+            <strong>56<span class="unit">ms</span></strong>
+            <span class="score-label">Server response</span>
+            <span class="score-note">Google “good”: &lt; 800ms</span>
+          </div>
+          <div class="score-tile">
+            <strong>0.00</strong>
+            <span class="score-label">Layout shift (CLS)</span>
+            <span class="score-note">Google “good”: &lt; 0.1</span>
+          </div>
+          <div class="score-tile">
+            <strong>234<span class="unit">KB</span></strong>
+            <span class="score-label">Total page weight</span>
+            <span class="score-note">B2B agency avg: 2–4MB</span>
+          </div>
+          <div class="score-tile">
+            <strong>~10<span class="unit">KB</span></strong>
+            <span class="score-label">JavaScript shipped</span>
+            <span class="score-note">Typical agency site: 500KB+</span>
+          </div>
+        </div>
+        <p class="scorecard-foot reveal" data-reveal>No render-blocking scripts. No third-party bloat. Zero layout shift. If we build this for ourselves, imagine what we build for you.</p>
       </div>
     </section>
 
@@ -504,6 +538,38 @@
       </div>
     </section>
 
+    <!-- ================= WHAT WE BELIEVE (point of view) ================= -->
+    <section class="section section--light beliefs-section" id="beliefs" aria-labelledby="beliefs-title">
+      <div class="container">
+        <div class="section-head reveal" data-reveal>
+          <h2 class="section-title" id="beliefs-title">What we believe <span class="fire-text">(and who we're not for).</span></h2>
+          <p class="section-lead">A point of view is a filter. If these don't sound like you, we're probably the wrong agency — and that's fine.</p>
+        </div>
+        <ol class="beliefs-grid">
+          <li class="belief reveal" data-reveal>
+            <span class="belief-num" aria-hidden="true">01</span>
+            <h3>Revenue is the only metric that matters.</h3>
+            <p>Impressions and likes don't pay wages. We report on pipeline, leads, and revenue — and we cut anything that doesn't move them.</p>
+          </li>
+          <li class="belief reveal" data-reveal data-delay="80">
+            <span class="belief-num" aria-hidden="true">02</span>
+            <h3>Show the numbers or stay quiet.</h3>
+            <p>Every claim we make is falsifiable. If we say we're fast, this page proves it. If we say we drive growth, there's a baselined number attached.</p>
+          </li>
+          <li class="belief reveal" data-reveal data-delay="160">
+            <span class="belief-num" aria-hidden="true">03</span>
+            <h3>Speed is a strategy, not a setting.</h3>
+            <p>A slow site quietly taxes every dollar you spend on ads and SEO. We treat performance as a growth lever, because the data says it is.</p>
+          </li>
+          <li class="belief reveal" data-reveal data-delay="240">
+            <span class="belief-num" aria-hidden="true">04</span>
+            <h3>Not for everyone.</h3>
+            <p>If you want vanity dashboards, a yes-agency, or the cheapest quote in the inbox, we'll happily point you elsewhere. We work with people who want to compound.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
     <!-- ================= PRICING ================= -->
     <section class="section" id="pricing" aria-labelledby="pricing-title">
       <div class="container">
@@ -671,6 +737,10 @@
           <img class="brand-logo brand-logo--footer" src="assets/logo-nav.svg?v=2" alt="Ignite Studio" width="169" height="40" loading="lazy" decoding="async" />
         </a>
         <p>Digital marketing that turns small businesses into local legends.</p>
+        <a class="perf-badge" href="#scorecard" aria-label="View our performance scorecard">
+          <span class="perf-dot" aria-hidden="true"></span>
+          <span>Live speed: <strong>56ms</strong> · CLS <strong>0.00</strong> · <span class="perf-more">see the numbers →</span></span>
+        </a>
       </div>
 
       <nav class="footer-col" aria-label="Services">

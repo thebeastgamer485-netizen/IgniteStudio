@@ -1284,6 +1284,124 @@ body.page-exit .site-footer { opacity: 0; }
   .link-grid, .post-grid { grid-template-columns: 1fr; }
 }
 
+/* ---------------- Public performance scorecard ---------------- */
+.scorecard-section {
+  background:
+    radial-gradient(60% 100% at 50% 0%, rgba(250,89,3,.08), transparent 60%),
+    var(--ink);
+}
+.scorecard-kicker {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: .8rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--flame-bright);
+  margin-bottom: 14px;
+}
+.scorecard-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-top: 8px;
+}
+.score-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 30px 26px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(255,255,255,.03), transparent);
+  position: relative;
+  overflow: hidden;
+}
+.score-tile::before {
+  content: "";
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; background: var(--grad-fire);
+}
+.score-tile strong {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.1rem, 1.5rem + 2vw, 3rem);
+  line-height: 1;
+  color: var(--flame-bright);
+}
+.score-tile .unit { font-size: .5em; color: var(--muted); margin-left: 2px; }
+.score-label { font-weight: 600; color: var(--text); font-size: 1rem; }
+.score-note { font-size: .82rem; color: var(--muted-2); }
+.scorecard-foot {
+  margin-top: 26px;
+  color: var(--muted);
+  font-size: 1.02rem;
+  max-width: 60ch;
+}
+.scorecard-foot::before { content: ""; }
+
+/* ---------------- What we believe ---------------- */
+.beliefs-grid {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.belief {
+  padding: 30px 30px 32px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  transition: transform .35s var(--ease), border-color .35s;
+}
+.belief:hover { transform: translateY(-4px); border-color: var(--flame); }
+.belief-num {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: var(--accent-strong);
+  letter-spacing: .04em;
+}
+.belief h3 { font-size: 1.3rem; margin: 10px 0 10px; letter-spacing: -.01em; }
+.belief p { color: var(--muted); font-size: 1rem; }
+
+/* ---------------- Footer performance badge ---------------- */
+.perf-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 18px;
+  padding: 8px 14px;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  font-size: .82rem;
+  color: var(--muted);
+  transition: border-color .2s, color .2s;
+}
+.perf-badge:hover { border-color: var(--flame); color: var(--text); }
+.perf-badge strong { color: var(--flame-bright); font-weight: 700; }
+.perf-more { color: var(--flame-bright); }
+.perf-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--ok, #3FB950);
+  box-shadow: 0 0 0 0 rgba(63,185,80,.6);
+  animation: perf-pulse 2.4s infinite;
+  flex-shrink: 0;
+}
+@keyframes perf-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(63,185,80,.55); }
+  70% { box-shadow: 0 0 0 8px rgba(63,185,80,0); }
+  100% { box-shadow: 0 0 0 0 rgba(63,185,80,0); }
+}
+
+@media (max-width: 900px) {
+  .scorecard-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .beliefs-grid { grid-template-columns: 1fr; }
+}
+
 /* Service card "learn more" link on the homepage */
 .card-link { display: inline-block; margin-top: 8px; padding: 10px 0; color: var(--accent-strong); font-weight: 600; font-size: .92rem; }
 .card-link:hover { text-decoration: underline; }
